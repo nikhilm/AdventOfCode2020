@@ -1,9 +1,10 @@
+"
+Validator that requires the character to be in only one of two potential places.
+"
 Class {
 	#name : #Validator2,
 	#superclass : #Object,
 	#instVars : [
-		'min',
-		'max',
 		'char',
 		'one',
 		'two'

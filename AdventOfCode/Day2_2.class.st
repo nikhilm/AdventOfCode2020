@@ -1,3 +1,6 @@
+"
+Day 2, part 2
+"
 Class {
 	#name : #'Day2_2',
 	#superclass : #Object,

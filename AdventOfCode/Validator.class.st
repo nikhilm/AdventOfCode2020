@@ -1,3 +1,6 @@
+"
+Validator that requires a certain number of a character to appear.
+"
 Class {
 	#name : #Validator,
 	#superclass : #Object,
