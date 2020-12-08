@@ -42,7 +42,7 @@ AOCBagRuleParser >> contents [
 
 { #category : #accessing }
 AOCBagRuleParser >> empty [
-	^ 'no other bags' asPParser
+	^ 'no other bags' asPParser ==> [ :x | OrderedCollection new.]
 ]
 
 { #category : #accessing }
