@@ -55,19 +55,21 @@ AOCShuttleSearch >> part2Answer [
 	- (if 'x', then just go to the next one)
 	- (t+4) is a multiple of the fourth shuttle.
 	we have to find this t. brute forcing is probably not the way to go."
-	"we rely on all inputs (shuttles) being primes (which they are for our input)"
-	"looked on the AoC reddit. there is something called the chinese remainder theorem"
-	"
-	say we try to find a number x, such that
-		x = 0 (mod shuttle1)
-		x = 
-	
-	"
+
+	"all inputs are prime, which satisfies the chinese remainder theorem requirement of pairwise coprimes.
+	instead of t, lets pick the highest timestamp and call it x, because it helps fit the problem within CRT better. input: 7,13,x,x,59,x,31,19
+	we want x such that:
+	x = 0 (mod 19), and since x is divisible by 19, but we want (x-1) to be divisible by 31
+	x = 1 (mod 31), and
+	x = 3 (mod 59), and
+	x = 6 (mod 13), and
+	x = 7 (mod 7)"
 	
 	"wolfram alpha for now"
+	"
 	shuttles doWithIndex: [ :shuttle :i |
 		shuttle isNotNil ifTrue: [ 
 			Transcript show: ('(t+{1})%{2} = 0, ' format: { (i-1) . shuttle }).
 		]
-	]
+	]"
 ]
