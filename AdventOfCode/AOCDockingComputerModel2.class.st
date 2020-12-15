@@ -23,7 +23,7 @@ AOCDockingComputerModel2 >> allLocations: anInteger [
 
 	"now we need to generate all the possibilities for the Xs"
 	answer := self generateFloatingLocations: maskApplied at: 36.
-	self assert: (answer size) equals: (2 ** (self mask count: [ :x | x isNil ])).
+	self assert: ((answer size) = (2 ** (self mask count: [ :x | x isNil ]))).
 	^ answer
 ]
 
@@ -48,7 +48,7 @@ AOCDockingComputerModel2 >> generateFloatingLocations: startLocation at: bitInde
 	
 	"the base case is where the index is 1 and not an X, where we return a set with just one item, which is the startLocation. This way a mask with no Xs would just return the location itself."
 	
-	self assert: (self mask size) equals: 36.
+	self assert: (self mask size = 36).
 	(bitIndex = 1 and: [ (self mask at: (36-bitIndex+1)) isNotNil ]) ifTrue: [ ^ { startLocation } asSet ].
 	
 	"base case where it is an X, just return the twiddles"
@@ -97,7 +97,7 @@ AOCDockingComputerModel2 >> memory [
 AOCDockingComputerModel2 >> parseMask: aMask [
 	"translate a string like XXXX10XXX0 into a upto 36 length sequence. we use a sequence of indices
 	because this mask needs to handle the floating thing. so in the sequence, nil indicates X (floating), while anything else is the actual value. highest bit is first."
-	self assert: (aMask size) equals: 36.
+	self assert: (aMask size = 36).
 	^ aMask collect: [ :ch |
 		(ch = $X) ifTrue: [ nil ] ifFalse: [ (ch = $1) ifTrue: [ 1 ] ifFalse: [ 0 ] ]
 	] as: OrderedCollection .

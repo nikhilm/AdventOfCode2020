@@ -12,7 +12,7 @@ Class {
 AOCDockingComputer >> applyMask: anInteger [
 	| answer |
 	answer := anInteger.
-	self assert: (self mask size) equals: 36.
+	self assert: (self mask size = 36).
 	self mask withIndexDo: [ :bit :i |
 		bit ifNotNil: [ 
 			answer := answer bitAt: (36-i+1) put: bit.
@@ -47,7 +47,7 @@ AOCDockingComputer >> memory [
 AOCDockingComputer >> parseMask: aMask [
 	"translate a string like XXXX10XXX0 into a upto 36 length sequence. we use a sequence of indices
 	because this mask is not AND/ORed it simply overwrites wherever bits are set. so in the sequence, nil indicates don't do anything, while anything else is the actual value. highest bit is first."
-	self assert: (aMask size) equals: 36.
+	self assert: (aMask size = 36).
 	^ aMask collect: [ :ch |
 		(ch = $X) ifTrue: [ nil ] ifFalse: [ (ch = $1) ifTrue: [ 1 ] ifFalse: [ 0 ] ]
 	] as: OrderedCollection .
