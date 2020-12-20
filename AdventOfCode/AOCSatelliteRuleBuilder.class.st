@@ -7,7 +7,9 @@ Class {
 		'sequence',
 		'terminal',
 		'ruleNumber',
-		'ruleCache'
+		'ruleCache',
+		'depth',
+		'allowLoops'
 	],
 	#category : #AdventOfCode
 }
@@ -19,12 +21,24 @@ AOCSatelliteRuleBuilder class >> fromRuleDescription: aDict [
 	^ inst build
 ]
 
+{ #category : #'as yet unclassified' }
+AOCSatelliteRuleBuilder class >> fromRuleDescription: aDict allowLoops: allow [
+	| inst |
+	inst := self new ruleDescriptions: aDict; allowLoops: allow.
+	^ inst build
+]
+
 { #category : #accessing }
 AOCSatelliteRuleBuilder class >> ignoredNames [
 	| ext |
 	ext := super ignoredNames asOrderedCollection .
-	ext add: #ruleDescriptions; add: #ruleCache.
+	ext add: #ruleDescriptions; add: #ruleCache; add: #depth; add: #allowLoops.
 	^ ext asArray.
+]
+
+{ #category : #'as yet unclassified' }
+AOCSatelliteRuleBuilder >> allowLoops: aFalse [ 
+	allowLoops := aFalse
 ]
 
 { #category : #'as yet unclassified' }
@@ -40,18 +54,42 @@ AOCSatelliteRuleBuilder >> choice [
 		] ) / sequence
 ]
 
+{ #category : #'as yet unclassified' }
+AOCSatelliteRuleBuilder >> depth: anInteger [ 
+	depth := anInteger
+]
+
 { #category : #initialization }
 AOCSatelliteRuleBuilder >> initialize [ 
 	super initialize.
 	ruleCache := Dictionary new. "icached pparser if navaialble"
+	depth := 0.
+	allowLoops := false.
 ]
 
 { #category : #accessing }
 AOCSatelliteRuleBuilder >> parserAt: aNumber [
-	| sub |
+	| sub sub42 sub31 sub11 |
 	^ ruleCache at: aNumber ifAbsentPut: [
-		sub := self class new ruleDescriptions: ruleDescriptions ; ruleCache: ruleCache.
-		sub parse: ((ruleDescriptions at: aNumber) trim) 
+		(aNumber = 8 and: [ allowLoops ]) ifTrue: [ 
+			"for these 2 rules we are going to return custom parsers"
+			(self parserAt: 42) plus
+		] ifFalse: [ 
+			(aNumber = 99999 and: [ allowLoops ]) ifTrue: [ 
+				"first construct the base case of 42  31"
+				
+				sub42 := self parserAt: 42.
+				sub31 := self parserAt: 31.		
+				"now this is 42 11? 31"
+				
+				sub := self class new ruleDescriptions: ruleDescriptions ; ruleCache: ruleCache; depth: (depth + 1); allowLoops: allowLoops.
+				(depth > 100) ifTrue: [ sub42 , sub31 ] ifFalse: [ sub42, (sub parserAt: 11) optional, sub31 ]
+			]
+			ifFalse: [
+				sub := self class new ruleDescriptions: ruleDescriptions ; ruleCache: ruleCache; depth: (depth + 1); allowLoops: allowLoops.
+				sub parse: ((ruleDescriptions at: aNumber) trim)
+			]
+		] 
 	]
 ]
 

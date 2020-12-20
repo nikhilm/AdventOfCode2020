@@ -2,10 +2,21 @@ Class {
 	#name : #AOCSatelliteRuleParser,
 	#superclass : #Object,
 	#instVars : [
-		'rules'
+		'rules',
+		'allowLoops'
 	],
 	#category : #AdventOfCode
 }
+
+{ #category : #'as yet unclassified' }
+AOCSatelliteRuleParser >> allowLoops: aTrue [ 
+	allowLoops := aTrue
+]
+
+{ #category : #initialization }
+AOCSatelliteRuleParser >> initialize [
+	allowLoops := false.
+]
 
 { #category : #parsing }
 AOCSatelliteRuleParser >> parse: text [ 
@@ -17,5 +28,5 @@ AOCSatelliteRuleParser >> parse: text [
 		ruleDesc := (line allButFirst: colonIndex) trim.
 		dict at: ruleNumber put: ruleDesc.
 	].
-	^ AOCSatelliteRuleBuilder fromRuleDescription: dict
+	^ AOCSatelliteRuleBuilder fromRuleDescription: dict allowLoops: allowLoops
 ]

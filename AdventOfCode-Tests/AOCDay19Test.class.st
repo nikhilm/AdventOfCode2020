@@ -67,7 +67,7 @@ aaaabbb' lines.
 { #category : #tests }
 AOCDay19Test >> testSamplePart2 [
 	|parser cases|
-	parser := AOCSatelliteRuleParser new parse: '42: 9 14 | 10 1
+	parser := AOCSatelliteRuleParser new allowLoops: true; parse: '42: 9 14 | 10 1
 9: 14 27 | 1 26
 10: 23 14 | 28 1
 1: "a"
@@ -98,7 +98,6 @@ AOCDay19Test >> testSamplePart2 [
 18: 15 15
 7: 14 5 | 1 21
 24: 14 1'.
-Halt now.
 	cases := 'abbbbbabbbaaaababbaabbbbabababbbabbbbbbabaaaa
 bbabbbbaabaabba
 babbbbaabbbbbabbbbbbaabaaabaaa
