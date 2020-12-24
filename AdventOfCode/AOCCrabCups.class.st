@@ -38,7 +38,7 @@ AOCCrabCups >> cups: aLinkedList [
 	cups := aLinkedList.
 	currentCup := cups firstLink.
 	"create a mapping from a label to a link so we can quickly find the new destination link"
-	labelToLinks := Dictionary new.
+	labelToLinks := Array new: aLinkedList size.
 	cups linksDo: [ :link |
 		labelToLinks at: link value put: link ]
 ]
