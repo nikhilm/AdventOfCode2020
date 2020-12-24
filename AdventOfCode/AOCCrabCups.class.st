@@ -4,7 +4,8 @@ Class {
 	#instVars : [
 		'cups',
 		'currentCup',
-		'startMax'
+		'startMax',
+		'labelToLinks'
 	],
 	#category : #AdventOfCode
 }
@@ -36,6 +37,10 @@ AOCCrabCups >> cups: aLinkedList [
 	| destinationLabel |
 	cups := aLinkedList.
 	currentCup := cups firstLink.
+	"create a mapping from a label to a link so we can quickly find the new destination link"
+	labelToLinks := Dictionary new.
+	cups linksDo: [ :link |
+		labelToLinks at: link value put: link ]
 ]
 
 { #category : #'as yet unclassified' }
@@ -82,12 +87,11 @@ AOCCrabCups >> move [
 		].
 	].
 	destinationLabel < min ifTrue: [ destinationLabel := max ].
-	"we have to do this O(N) iteration unfortunately."
-	cups linksDo: [ :link |
-		 	link value = destinationLabel ifTrue: [ destinationLink := link ] ].
-	self assert: destinationLink isNotNil.
+	destinationLink := labelToLinks at: destinationLabel.
 	removedLabels do: [ :label |
 		destinationLink := cups add: label afterLink: destinationLink.
+		"update the dictionary"
+		labelToLinks at: label put: destinationLink.
 	].
 	currentCup := currentCup nextLink.
 	currentCup isNil ifTrue: [ currentCup := cups firstLink ].
