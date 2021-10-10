@@ -1,0 +1,40 @@
+for X we would generate {0, 1}
+eg for input 42 -> 0b101010 -> {0b101010, 0b101011}
+
+for X-X we would generate -> {0-0, 0-1, 1-0, 1-1}, but how does that affect the 42? Well in each branch we just set those bits of 42 to that specific value.
+
+locations = set()
+for 36 to 1:
+    hmm for every X we encounter, we will branch and have one branch for 0 and one branch for 1. underneath each branch, we will regenerate for the rest of the number (which will be common in each branch).
+
+so a starting call:
+            foo(0b101010, ---------X)
+is the base case and returns {42 with bit 1 set to 0, 42 with bit 1 set to 1} -> {42, 43}.
+
+but how to express multiple Xs?
+
+        foo(0b101010, ------X-X)
+
+when it encounters the X at pos 3, recursively calls with the next pos (which is 2, where there is not an X), and then for every item in the response, generates a new set, which has all the items in the response with pos 3 set to 0 and another with pos 3 set to 1).
+
+a recursive call where the pos is not an X should return the results of recursively calling again!
+
+mask = -----X-X
+so foo(0b101010, 36), starting at 36 keeps proceeding until it hits 3
+at 3,
+foo(0b101010, 3)
+    it calls foo(0b101010, 2)
+        which calls foo(0b101010, 1)
+            pos 1 is an X, which returns {42, 43}
+        returns {42, 43}
+    returns {0b101010, 0b101110, 0b101011, 0b101111}
+
+mask = -----XX-
+so foo(0b101010, 36), starting at 36 keeps proceeding until it hits 3
+at 3,
+foo(0b101010, 3)
+    it calls foo(0b101010, 2)
+        which calls foo(0b101010, 1)
+            pos 1 is not an X, which returns {42}
+        returns {0b101010, 0b101000}
+    returns {0b101010, 0b101110, 0b101000, 0b101100}
